@@ -1,5 +1,15 @@
 # frozen_string_literal: true
+require "csv"
 
+  class Utils
+    def self.to_hash(record)
+      hash = {}
+      record.instance_variables.each do |var| 
+        hash[var.to_s.delete("@")] = record.instance_variable_get(var)
+      end
+      hash
+    end
+  end
   INFLATION_RATE = 0.03
   INFINITE_DURATION = :infinite
   EXPIRED_DURATION = :expired
@@ -54,9 +64,14 @@
         return self.name == other.name && self.amount == other.amount && self.rate_of_increase == other.rate_of_increase && self.duration = other.duration
       end
     end
+    def to_h
+      Utils.to_hash(self)
+    end
+
   end
 
   class Year
+
     attr_accessor :items
     def initialize(items)
       @items = items
@@ -69,6 +84,9 @@
     end
     def merge(other)
       other.nil? ? self : Year.new(self.items + other.items)
+    end
+    def to_h
+      {"items" => items.map{ |item| item.to_h}}
     end
   end
 
@@ -93,6 +111,10 @@
         new_years[current_year] = next_year.merge(existing_year)
       end
       Plan.new(new_years, current_year)
+    end
+
+    def toCSV
+      years.map {|k, year| [k, year.to_h]}.to_h
     end
 end
 
