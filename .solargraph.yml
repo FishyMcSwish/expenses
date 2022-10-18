@@ -2,7 +2,6 @@
 include:
 - "**/*.rb"
 exclude:
-- test/**/*
 - vendor/**/*
 - ".bundle/**/*"
 require: []
