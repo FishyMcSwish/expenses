@@ -1,6 +1,7 @@
 ---
 include:
-- "**/*.rb"
+- "lib/**/*"
+- "spec/**/*"
 exclude:
 - vendor/**/*
 - ".bundle/**/*"
